@@ -11,7 +11,7 @@ namespace IoCIdentity.Identity
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store) : base(store)
+        public ApplicationUserManager(IUserStore<ApplicationUser> store, IIdentityMessageService emailService) : base(store)
         {
             // Configure validation logic for usernames
             this.UserValidator = new UserValidator<ApplicationUser>(this)
@@ -46,7 +46,7 @@ namespace IoCIdentity.Identity
                 Subject = "Security Code",
                 BodyFormat = "Your security code is {0}"
             });
-            this.EmailService = new EmailService();
+            this.EmailService = emailService;
             this.SmsService = new SmsService();
 
             var dataProtectionProvider = Startup.DataProtectionProvider;

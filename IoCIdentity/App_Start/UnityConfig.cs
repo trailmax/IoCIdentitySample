@@ -30,7 +30,7 @@ namespace IoCIdentity
             container.RegisterType<ApplicationDbContext>();
             container.RegisterType<ApplicationSignInManager>();
             container.RegisterType<ApplicationUserManager>();
-            container.RegisterType<EmailService>();
+            container.RegisterType<IIdentityMessageService, SendGridEmailService>();
 
             container.RegisterType<IAuthenticationManager>(
                 new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
