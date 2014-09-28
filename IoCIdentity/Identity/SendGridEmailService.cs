@@ -26,7 +26,7 @@ namespace IoCIdentity.Identity
             myMessage.Html = message.Body;
 
             // Create credentials, specifying your SendGrid username and password.
-            var credentials = new NetworkCredential("MyUsername", "MyPassword");
+            var credentials = new NetworkCredential("YourUsername", "YourPassword");
 
             // Create an Web transport for sending email.
             var transportWeb = new Web(credentials);
