@@ -56,9 +56,6 @@ namespace IoCIdentity.Identity
 
                 this.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtector);
             }
-
-            //alternatively use this if you are running in Azure Web Sites
-            this.UserTokenProvider = new EmailTokenProvider<ApplicationUser, string>();
         }
     }
 }
