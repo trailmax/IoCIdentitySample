@@ -9,7 +9,7 @@ namespace IoCIdentity.Identity
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store, IIdentityMessageService emailService) : base(store)
+        public ApplicationUserManager(IUserStore<ApplicationUser> store, IIdentityMessageService emailService, IDataProtectionProvider dataProtectionProvider) : base(store)
         {
             // Configure validation logic for usernames
             this.UserValidator = new UserValidator<ApplicationUser>(this)
@@ -47,7 +47,6 @@ namespace IoCIdentity.Identity
             this.EmailService = emailService;
             this.SmsService = new SmsService();
 
-            var dataProtectionProvider = Startup.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
                 IDataProtector dataProtector = dataProtectionProvider.Create("ASP.NET Identity");

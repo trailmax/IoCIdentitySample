@@ -8,17 +8,16 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.DataProtection;
 using Owin;
 using IoCIdentity.Models;
+using Microsoft.Practices.Unity;
 
 namespace IoCIdentity
 {
     public partial class Startup
     {
-        internal static IDataProtectionProvider DataProtectionProvider { get; private set; }
-
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
         {
-            DataProtectionProvider = app.GetDataProtectionProvider();
+            UnityConfig.GetConfiguredContainer().RegisterInstance(app.GetDataProtectionProvider());
 
             // Configure the db context, user manager and signin manager to use a single instance per request
             app.CreatePerOwinContext(() => DependencyResolver.Current.GetService<ApplicationUserManager>());
