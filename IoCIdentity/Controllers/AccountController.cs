@@ -16,12 +16,14 @@ namespace IoCIdentity.Controllers
         private readonly ApplicationUserManager userManager;
         private readonly ApplicationSignInManager signInManager;
         private readonly IAuthenticationManager authenticationManager;
+        private readonly ApplicationRoleManager roleManager;
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authenticationManager)
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager, IAuthenticationManager authenticationManager, ApplicationRoleManager roleManager)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.authenticationManager = authenticationManager;
+            this.roleManager = roleManager;
         }
 
 

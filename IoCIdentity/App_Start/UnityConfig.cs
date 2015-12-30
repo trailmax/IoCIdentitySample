@@ -30,6 +30,7 @@ namespace IoCIdentity
             container.RegisterType<ApplicationDbContext>();
             container.RegisterType<ApplicationSignInManager>();
             container.RegisterType<ApplicationUserManager>();
+            container.RegisterType<ApplicationRoleManager>();
 
             container.RegisterType<IIdentityMessageService, SendGridEmailService>("production");
             container.RegisterType<IIdentityMessageService, MailtrapEmailService>("debugging");
@@ -55,6 +56,9 @@ namespace IoCIdentity
                 new InjectionFactory(c => HttpContext.Current.GetOwinContext().Authentication));
 
             container.RegisterType<IUserStore<ApplicationUser>, UserStore<ApplicationUser>>(
+                new InjectionConstructor(typeof(ApplicationDbContext)));
+
+            container.RegisterType<IRoleStore<IdentityRole, string>, RoleStore<IdentityRole, string, IdentityUserRole>>(
                 new InjectionConstructor(typeof(ApplicationDbContext)));
         }
     }
