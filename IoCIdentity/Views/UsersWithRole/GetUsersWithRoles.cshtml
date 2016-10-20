@@ -1,0 +1,14 @@
+﻿@model IoCIdentity.Controllers.GetUsersWithRolesViewModel
+
+@{
+    ViewBag.Title = "title";
+}
+
+<h2>List of users in role @Model.RoleName</h2>
+
+<ul>
+    @foreach (var user in @Model.Users)
+    {
+        <li>@user.UserName</li>
+    }
+</ul>

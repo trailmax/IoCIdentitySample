@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using IoCIdentity.Models;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
@@ -9,8 +11,11 @@ namespace IoCIdentity.Identity
 {
     public class ApplicationUserManager : UserManager<ApplicationUser>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store, IIdentityMessageService emailService, IDataProtectionProvider dataProtectionProvider) : base(store)
+        private readonly ApplicationDbContext context;
+
+        public ApplicationUserManager(IUserStore<ApplicationUser> store, IIdentityMessageService emailService, IDataProtectionProvider dataProtectionProvider, ApplicationDbContext context) : base(store)
         {
+            this.context = context;
             // Configure validation logic for usernames
             this.UserValidator = new UserValidator<ApplicationUser>(this)
             {
@@ -56,6 +61,26 @@ namespace IoCIdentity.Identity
 
             //alternatively use this if you are running in Azure Web Sites
             this.UserTokenProvider = new EmailTokenProvider<ApplicationUser, string>();
+        }
+
+        /// the create part which is moved from the default /// 
+        public IEnumerable<ApplicationUser> GetUsersInRole(string roleName)
+        {
+            if (String.IsNullOrWhiteSpace(roleName))
+            {
+                throw new ArgumentNullException(nameof(roleName));
+            }
+
+            var role = context.Roles.FirstOrDefault(r => r.Name == roleName);
+
+            if (role == null)
+            {
+                throw new Exception($"Role with this name not found: {roleName}");
+            }
+
+            var users = context.Users.Where(u => u.Roles.Any(r => r.RoleId == role.Id)).ToList();
+
+            return users;
         }
     }
 }
